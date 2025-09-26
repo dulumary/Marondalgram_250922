@@ -1,5 +1,6 @@
 package com.marondal.marondalgram.user;
 
+import com.marondal.marondalgram.user.domain.User;
 import com.marondal.marondalgram.user.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,5 +50,26 @@ public class UserRestController {
         return resultMap;
 
     }
+
+
+    @PostMapping("/login-process")
+    public Map<String, String> login(
+            @RequestParam String loginId
+            , @RequestParam String password) {
+
+        User user = userService.getUser(loginId, password);
+
+        Map<String, String> resultMap = new HashMap<>();
+
+        if(user != null) {
+            resultMap.put("result", "success");
+        } else {
+            resultMap.put("result", "fail");
+        }
+
+        return resultMap;
+
+    }
+
 
 }
