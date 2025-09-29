@@ -1,6 +1,7 @@
 package com.marondal.marondalgram.user.service;
 
 import com.marondal.marondalgram.common.SHA256HashingEncoder;
+import com.marondal.marondalgram.user.domain.User;
 import com.marondal.marondalgram.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +40,13 @@ public class UserService {
         } else {
             return true;
         }
+    }
+
+    public User getUser(String loginId, String password) {
+
+        String encodedPassword = SHA256HashingEncoder.encode(password);
+
+        return userRepository.selectUser(loginId, encodedPassword);
     }
 
 
