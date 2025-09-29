@@ -13,9 +13,11 @@
                 <h2 class="text-center">Marondalgram</h2>
                 <br>
 
-                <input type="text" class="form-control mt-3" placeholder="아이디" id="idInput">
-                <input type="password" class="form-control mt-3" placeholder="패스워드" id="passwordInput">
-                <button type="button" class="btn btn-primary btn-block mt-3" id="loginBtn">로그인</button>
+                <form id="loginForm">
+                    <input type="text" class="form-control mt-3" placeholder="아이디" id="idInput">
+                    <input type="password" class="form-control mt-3" placeholder="패스워드" id="passwordInput">
+                    <button type="submit" class="btn btn-primary btn-block mt-3" id="loginBtn">로그인</button>
+                </form>
 
                 <hr/>
 
@@ -30,7 +32,11 @@
 </section>
 
 <script layout:fragment="script">
-    $("#loginBtn").on("click", function() {
+    $("#loginForm").on("submit", function(e) {
+
+        // 해당 이벤트의 추가 기능을 취소!
+        e.preventDefault();
+
         let id = $("#idInput").val();
         let password = $("#passwordInput").val();
 
