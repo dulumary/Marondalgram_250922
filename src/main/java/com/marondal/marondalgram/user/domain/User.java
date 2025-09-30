@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class User {
 
-    private int id;
+    private long id;
     private String loginId;
     private String password;
     private String name;
@@ -12,11 +12,11 @@ public class User {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
