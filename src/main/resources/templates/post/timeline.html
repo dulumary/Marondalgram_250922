@@ -23,7 +23,7 @@
             <!-- 카드 -->
             <div class="card my-3" th:each="post:${postList}">
                 <div class="d-flex justify-content-between p-2">
-                    <div th:text="${post.userId}">bada</div>
+                    <div th:text="${post.loginId}">bada</div>
                     <i class="bi bi-three-dots-vertical"></i>
 
                 </div>
@@ -37,7 +37,7 @@
                 </div>
 
                 <div class="p-2">
-                    <b th:text="${post.userId}">bada</b> <span th:text="${post.contents}">안녕</span>
+                    <b th:text="${post.loginId}">bada</b> <span th:text="${post.contents}">안녕</span>
                 </div>
                 <!-- 댓글 목록 -->
                 <div class="comment-box">
