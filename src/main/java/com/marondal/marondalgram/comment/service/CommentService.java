@@ -5,6 +5,8 @@ import com.marondal.marondalgram.comment.repository.CommentRepository;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CommentService {
 
@@ -30,5 +32,9 @@ public class CommentService {
 
         return true;
 
+    }
+
+    public List<Comment> getCommentListByPostId(long postId) {
+        return commentRepository.findByPostId(postId);
     }
 }

@@ -1,11 +1,16 @@
 package com.marondal.marondalgram.post.service;
 
+import com.marondal.marondalgram.comment.domain.Comment;
+import com.marondal.marondalgram.comment.service.CommentService;
 import com.marondal.marondalgram.common.FileManager;
+import com.marondal.marondalgram.like.service.LikeService;
 import com.marondal.marondalgram.post.domain.Post;
 import com.marondal.marondalgram.post.dto.PostDto;
 import com.marondal.marondalgram.post.repository.PostRepository;
 import com.marondal.marondalgram.user.domain.User;
 import com.marondal.marondalgram.user.service.UserService;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -14,16 +19,22 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.ArrayList;
 import java.util.List;
 
+// 필수 멤버변수에 대한 초기화 생성자
+@RequiredArgsConstructor
 @Service
 public class PostService {
 
     private final PostRepository postRepository;
     private final UserService userService;
+    private final LikeService likeService;
+    private final CommentService commentService;
 
-    public PostService(PostRepository postRepository, UserService userService) {
-        this.postRepository = postRepository;
-        this.userService = userService;
-    }
+//    public PostService(PostRepository postRepository, UserService userService, LikeService likeService, CommentService commentService) {
+//        this.postRepository = postRepository;
+//        this.userService = userService;
+//        this.likeService = likeService;
+//        this.commentService = commentService;
+//    }
 
     public boolean createPost(long userId, String contents, MultipartFile file) {
 
@@ -54,12 +65,18 @@ public class PostService {
 
             User user = userService.getUserById(post.getUserId());
 
+            int likeCount = likeService.getLikeCountByPostId(post.getId());
+
+            List<Comment> commentList = commentService.getCommentListByPostId(post.getId());
+
             PostDto postDto = PostDto.builder()
                     .id(post.getId())
                     .userId(post.getUserId())
                     .contents(post.getContents())
                     .loginId(user.getLoginId())
                     .imagePath(post.getImagePath())
+                    .likeCount(likeCount)
+                    .commentList(commentList)
                     .build();
 
             postDtoList.add(postDto);
