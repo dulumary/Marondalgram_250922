@@ -1,5 +1,6 @@
 package com.marondal.marondalgram.post.service;
 
+import com.marondal.marondalgram.common.FileManager;
 import com.marondal.marondalgram.post.domain.Post;
 import com.marondal.marondalgram.post.dto.PostDto;
 import com.marondal.marondalgram.post.repository.PostRepository;
@@ -8,6 +9,7 @@ import com.marondal.marondalgram.user.service.UserService;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,11 +25,14 @@ public class PostService {
         this.userService = userService;
     }
 
-    public boolean createPost(long userId, String contents) {
+    public boolean createPost(long userId, String contents, MultipartFile file) {
+
+        String imagePath = FileManager.saveFile(userId, file);
 
         Post post = Post.builder()
                 .userId(userId)
                 .contents(contents)
+                .imagePath(imagePath)
                 .build();
 
         try {
@@ -54,6 +59,7 @@ public class PostService {
                     .userId(post.getUserId())
                     .contents(post.getContents())
                     .loginId(user.getLoginId())
+                    .imagePath(post.getImagePath())
                     .build();
 
             postDtoList.add(postDto);

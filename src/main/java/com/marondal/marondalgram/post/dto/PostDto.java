@@ -13,4 +13,5 @@ public class PostDto {
 
     private String loginId;
     private String contents;
+    private String imagePath;
 }

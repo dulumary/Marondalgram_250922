@@ -28,10 +28,10 @@
 
                 </div>
                 <div>
-                    <img class="w-100" src="https://cdn.pixabay.com/photo/2025/03/06/08/25/blueberries-9450130_1280.jpg">
+                    <img class="w-100" th:src="${post.imagePath}" src="https://cdn.pixabay.com/photo/2025/03/06/08/25/blueberries-9450130_1280.jpg">
                 </div>
                 <div class="p-2">
-                    <i class="bi bi-heart text-danger like-btn"></i>
+                    <i class="bi bi-heart text-danger like-btn" th:data-post-id="${post.id}"></i>
 
                     <span>좋아요 11개</span>
                 </div>
@@ -55,7 +55,7 @@
                         <div class="input-group">
                             <input type="text" class="form-control">
                             <div class="input-group-append">
-                                <button type="button" class="btn btn-info">게시</button>
+                                <button type="button" class="btn btn-info comment-btn" th:data-post-id="${post.id}">게시</button>
                             </div>
 
                         </div>
@@ -77,18 +77,67 @@
 </section>
 
 <script layout:fragment="script">
+
+    $(".comment-btn").on("click", function() {
+
+        let postId = $(this).data("post-id");
+
+
+
+    });
+
+    $(".like-btn").on("click", function() {
+
+        let postId = $(this).data("post-id");
+
+        $.ajax({
+            type:"post"
+            , url:"/post/like"
+            , data:{"postId":postId}
+            , success:function(response) {
+                if(response.result == "success") {
+                    location.reload();
+                } else {
+                    alert("좋아요 실패!");
+                }
+            }
+            , error:function() {
+                alert("좋아요 에러!!");
+            }
+        });
+
+
+    });
+
+    $("#imageInput").on("click", function() {
+        $("#fileInput").click();
+    });
+
     $("#uploadBtn").on("click", function() {
         let contents = $("#contentsInput").val();
+
+        let file = $("#fileInput")[0].files[0];
 
         if(contents == "") {
             alert("내용을 입력하세요");
             return;
         }
 
+        if(file == null) {
+            alert("이미지를 선택해주세요");
+            return ;
+        }
+
+        let formData = new FormData();
+        formData.append("contents", contents);
+        formData.append("imageFile", file);
+
         $.ajax({
             type:"post"
             , url:"/post/write-process"
-            , data:{"contents":contents}
+            , data:formData
+            , processData:false
+            , contentType:false
             , success:function(response) {
                 if(response.result == "success") {
                     location.reload();
