@@ -10,4 +10,7 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
     // SELECT COUNT(*) FROM `like` WHERE `postId` = #{}
     public int countByPostId(long postId);
 
+    // WHERE `post_id` = #{} AND `user_id` = #{}
+    public boolean existsByPostIdAndUserId(long postId, long userId);
+
 }

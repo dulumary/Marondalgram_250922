@@ -2,6 +2,7 @@ package com.marondal.marondalgram.post.dto;
 
 
 import com.marondal.marondalgram.comment.domain.Comment;
+import com.marondal.marondalgram.comment.dto.CommentDto;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -19,6 +20,7 @@ public class PostDto {
     private String imagePath;
 
     private int likeCount;
+    private boolean isLike;
 
-    private List<Comment> commentList;
+    private List<CommentDto> commentList;
 }

@@ -31,8 +31,8 @@
                     <img class="w-100" th:src="${post.imagePath}" src="https://cdn.pixabay.com/photo/2025/03/06/08/25/blueberries-9450130_1280.jpg">
                 </div>
                 <div class="p-2">
-                    <i class="bi bi-heart-fill text-danger"></i>
-                    <i class="bi bi-heart text-danger like-btn" th:data-post-id="${post.id}"></i>
+                    <i th:if="${post.isLike}" class="bi bi-heart-fill text-danger"></i>
+                    <i th:unless="${post.isLike}" class="bi bi-heart text-danger like-btn" th:data-post-id="${post.id}"></i>
 
                     <span>좋아요 <span th:text="${post.likeCount}">11</span>개</span>
                 </div>
@@ -45,7 +45,7 @@
                     <div class="pl-2">댓글</div>
                     <div class="p-2">
                         <div th:each="comment:${post.commentList}">
-                            <b th:text="${comment.userId}">bada</b> <span th:text="${comment.contents}">우하하하</span>
+                            <b th:text="${comment.loginId}">bada</b> <span th:text="${comment.contents}">우하하하</span>
                         </div>
 
                     </div>
