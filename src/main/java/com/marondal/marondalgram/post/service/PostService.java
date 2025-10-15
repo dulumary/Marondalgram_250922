@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 // 필수 멤버변수에 대한 초기화 생성자
 @RequiredArgsConstructor
@@ -87,6 +88,24 @@ public class PostService {
 
         return postDtoList;
 
+
+    }
+
+    public boolean deletePost(long id) {
+
+        Optional<Post> optionalPost = postRepository.findById(id);
+
+        if(optionalPost.isPresent()) {
+
+            Post post = optionalPost.get();
+
+            FileManager.removeFile(post.getImagePath());
+            postRepository.delete(post);
+        } else {
+            return false;
+        }
+
+        return true;
 
     }
 

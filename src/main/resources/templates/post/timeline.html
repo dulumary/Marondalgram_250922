@@ -24,14 +24,14 @@
             <div class="card my-3" th:each="post:${postList}">
                 <div class="d-flex justify-content-between p-2">
                     <div th:text="${post.loginId}">bada</div>
-                    <i class="bi bi-three-dots-vertical"></i>
+                    <i class="bi bi-three-dots-vertical more-btn" th:data-post-id="${post.id}"></i>
 
                 </div>
                 <div>
                     <img class="w-100" th:src="${post.imagePath}" src="https://cdn.pixabay.com/photo/2025/03/06/08/25/blueberries-9450130_1280.jpg">
                 </div>
                 <div class="p-2">
-                    <i th:if="${post.isLike}" class="bi bi-heart-fill text-danger"></i>
+                    <i th:if="${post.isLike}" class="bi bi-heart-fill text-danger unlike-btn" th:data-post-id="${post.id}"></i>
                     <i th:unless="${post.isLike}" class="bi bi-heart text-danger like-btn" th:data-post-id="${post.id}"></i>
 
                     <span>좋아요 <span th:text="${post.likeCount}">11</span>개</span>
@@ -76,6 +76,27 @@
 
 <script layout:fragment="script">
 
+    $(".more-btn").on("click", function() {
+
+        let postId = $(this).data("post-id");
+
+        $.ajax({
+            type:"delete"
+            , url:"/post/remove"
+            , data:{"id":postId}
+            , success:function(response) {
+                if(response.result == "success") {
+                    location.reload();
+                } else {
+                    alert("삭제 실패!!");
+                }
+            }
+            , error:function() {
+                alert("삭제 에러!");
+            }
+        });
+    });
+
     $(".comment-btn").on("click", function() {
 
         let postId = $(this).data("post-id");
@@ -95,6 +116,29 @@
             }
             , error:function() {
                 alert("댓글 작성 에러");
+            }
+        });
+
+    });
+
+
+    $(".unlike-btn").on("click", function() {
+
+        let postId = $(this).data("post-id");
+
+        $.ajax({
+            type:"delete"
+            , url:"/post/unlike"
+            , data:{"postId":postId}
+            , success:function(response) {
+                if(response.result == "success") {
+                    location.reload();
+                } else {
+                    alert("좋아요 취소 실패!");
+                }
+            }
+            , error:function() {
+                alert("좋아요 취소 에러!");
             }
         });
 
