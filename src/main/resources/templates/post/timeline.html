@@ -24,7 +24,7 @@
             <div class="card my-3" th:each="post:${postList}">
                 <div class="d-flex justify-content-between p-2">
                     <div th:text="${post.loginId}">bada</div>
-                    <i class="bi bi-three-dots-vertical more-btn" th:data-post-id="${post.id}"></i>
+                    <i th:if="${post.userId == session.userId}" class="bi bi-three-dots-vertical more-btn" th:data-post-id="${post.id}"  data-toggle="modal" data-target="#moreModal"></i>
 
                 </div>
                 <div>
@@ -72,11 +72,34 @@
     </div>
     <!-- /전체 layout -->
 
+    <!-- Modal -->
+    <div class="modal fade" id="moreModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+
+                <div class="modal-body text-center">
+                    <a href="#" id="removeBtn">삭제하기</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
 </section>
 
 <script layout:fragment="script">
 
     $(".more-btn").on("click", function() {
+        // 삭제하기 버튼에 현재 클릭된 태그로 부터 얻어온 삭제 대상 postId 를
+        // data-post-id 속성 값으로 추가한다
+
+        let postId = $(this).data("post-id");
+
+        $("#removeBtn").data("post-id", postId);
+
+    });
+
+    $("#removeBtn").on("click", function() {
 
         let postId = $(this).data("post-id");
 

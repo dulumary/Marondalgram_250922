@@ -53,5 +53,8 @@ public class LikeService {
         return likeRepository.existsByPostIdAndUserId(postId, userId);
     }
 
+    public void deleteByPostId(long postId) {
+        likeRepository.deleteByPostId(postId);
+    }
 
 }

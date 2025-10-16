@@ -40,11 +40,15 @@ public class PostRestController {
     }
 
     @DeleteMapping("/remove")
-    public Map<String, String> removePost(@RequestParam long id) {
+    public Map<String, String> removePost(
+            @RequestParam long id
+            , HttpSession session) {
 
         Map<String, String> resultMap = new HashMap<>();
 
-        if(postService.deletePost(id)) {
+        long userId = (Long)session.getAttribute("userId");
+
+        if(postService.deletePost(id, userId)) {
             resultMap.put("result", "success");
         } else {
             resultMap.put("result", "fail");

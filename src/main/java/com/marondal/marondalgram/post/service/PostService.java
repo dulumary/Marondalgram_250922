@@ -10,6 +10,7 @@ import com.marondal.marondalgram.post.dto.PostDto;
 import com.marondal.marondalgram.post.repository.PostRepository;
 import com.marondal.marondalgram.user.domain.User;
 import com.marondal.marondalgram.user.service.UserService;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
@@ -91,7 +92,8 @@ public class PostService {
 
     }
 
-    public boolean deletePost(long id) {
+    @Transactional
+    public boolean deletePost(long id, long userId) {
 
         Optional<Post> optionalPost = postRepository.findById(id);
 
@@ -99,7 +101,13 @@ public class PostService {
 
             Post post = optionalPost.get();
 
+            if(post.getUserId() != userId) {
+                return false;
+            }
+
             FileManager.removeFile(post.getImagePath());
+            likeService.deleteByPostId(post.getId());
+            commentService.deleteByPostId(post.getId());
             postRepository.delete(post);
         } else {
             return false;
